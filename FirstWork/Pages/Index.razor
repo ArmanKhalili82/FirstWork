@@ -1,6 +1,20 @@
 ﻿@page "/"
 @using Data
 @using Data.Models
+@using System.Data.SqlClient
+@using System.Data;
+
+@using (var connection = new SqlConnection(@"Server=.;Database=FirstTable;Encrypt=False;Integrated Security=True")) {
+    using (var command = new SqlCommand("SelectAllNames", connection))
+    {
+         command.CommandType = CommandType.StoredProcedure;
+        @*command.Parameters.AddWithValue("@ParameterName", value);
+        command.Parameters.AddWithValue("@ParameterName", value); *@
+            await connection.OpenAsync();
+        await
+     command.ExecuteNonQueryAsync();
+    }
+}
 
 <MudTable Items="_items" Height="350px" Breakpoint="Breakpoint.Sm" Virtualize="true" FixedHeader="true">
     <HeaderContent>
@@ -14,14 +28,8 @@
 </MudTable>
 
 @code {
-    // public class TestItem
-    // {
-    //     public string Column1 { get; set; }
-    //     public string Column2 { get; set; }
-    //     public string Column3 { get; set; }
-    //     public string Column4 { get; set; }
-    //     public string Column5 { get; set; }
-    // }
+    
+
 
 
     private List<Table> _items;
@@ -30,17 +38,6 @@
     {
         _items = new List<Table>();
         var db = new Table();
-        // for (int i = 0; i < 20; i++)
-        // {
-        //     _items.Add(new TestItem
-        //         {
-        //             Column1 = $"Value_{i}",
-        //             Column2 = $"Value_{i}",
-        //             Column3 = $"Value_{i}",
-        //             Column4 = $"Value_{i}",
-        //             Column5 = $"Value_{i}",
-        //         });
-        // }
     }
 
 }
